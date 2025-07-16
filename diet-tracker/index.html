@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Daily Diet Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="app-header">
+            <h1>Daily Diet Tracker</h1>
+            <button id="resetButton" class="reset-btn" title="Reset all data">Reset</button>
+        </div>
+        <div id="dietItems">
+            <!-- Items will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Add Item Modal -->
+    <div id="addItemModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Item</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addItemForm">
+                    <div class="form-group">
+                        <label for="itemName">Name</label>
+                        <input type="text" id="itemName" required autocomplete="off">
+                        <div id="autocompleteResults" class="autocomplete-results"></div>
+                    </div>
+                    
+                    <!-- Existing Item Fields -->
+                    <div id="existingItemFields" style="display: none;">
+                        <div class="form-group amount-group">
+                            <label for="itemAmount">Amount</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="itemAmount" min="0" step="1">
+                                <span id="unitLabel"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- New Item Fields -->
+                    <div id="newItemFields" style="display: none;">
+                        <div class="form-group">
+                            <label for="newAmount">Amount</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="newAmount" min="0" step="1" required>
+                                <select id="newUnit" required>
+                                    <option value="gram">gram</option>
+                                    <option value="piece">piece</option>
+                                    <option value="scoop">scoop</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="protein">Protein (g)</label>
+                            <input type="number" id="protein" min="0" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label for="carbs">Carbs (g)</label>
+                            <input type="number" id="carbs" min="0" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label for="fat">Fat (g)</label>
+                            <input type="number" id="fat" min="0" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label for="calories">Calories</label>
+                            <input type="number" id="calories" readonly>
+                        </div>
+                        <div id="saveToMasterList" class="form-group checkbox-group">
+                            <label>
+                                <input type="checkbox" id="saveToMasterListCheckbox">
+                                Save to master list for future use
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit">Add Item</button>
+                        <button type="button" class="cancel-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
