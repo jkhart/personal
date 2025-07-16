@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Splash</title>
+</head>
+<body>
+    <canvas id="splashCanvas" width="1125" height="2436"></canvas>
+    <script>
+        const canvas = document.getElementById('splashCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set background
+        ctx.fillStyle = '#4CAF50';
+        ctx.fillRect(0, 0, 1125, 2436);
+
+        // Draw a plate/circle
+        ctx.beginPath();
+        ctx.arc(1125/2, 2436/2, 200, 0, 2 * Math.PI);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+
+        // Draw fork icon
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 24;
+        ctx.beginPath();
+        ctx.moveTo(1125/2 - 60, 2436/2 - 120);
+        ctx.lineTo(1125/2 - 60, 2436/2 + 120);
+        ctx.moveTo(1125/2 + 60, 2436/2 - 120);
+        ctx.lineTo(1125/2 + 60, 2436/2 + 120);
+        ctx.stroke();
+
+        // Add text
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 80px -apple-system, system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Diet Tracker', 1125/2, 2436/2 + 400);
+
+        // Save as PNG
+        const link = document.createElement('a');
+        link.download = 'splash.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    </script>
+</body>
+</html>
