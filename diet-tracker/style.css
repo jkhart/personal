@@ -75,8 +75,8 @@ h1 {
 .items-container {
     margin-bottom: 12px;
     background: white;
-    border-radius: 12px;
-    padding: 12px;
+    border-radius: 6px;
+    padding: 6px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     max-width: 375px;
     margin-left: auto;
@@ -84,7 +84,7 @@ h1 {
 }
 
 .daily-totals {
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .daily-totals .items-table thead th {
@@ -107,6 +107,7 @@ h1 {
     border-collapse: separate;
     border-spacing: 0;
     font-size: 11px;
+    border: 1px solid #cbd5e1;
 }
 
 .items-table td {
@@ -127,7 +128,7 @@ h1 {
 
 .items-table thead th {
     background: #edf2f7;
-    font-weight: 800;
+    font-weight: 600;
     color: #2d3748;
     font-size: 11px;
     white-space: nowrap;
@@ -152,10 +153,10 @@ h1 {
 
 .items-table tr.goal-row td {
     color: #475569;
-    text-transform: uppercase;
+    font-weight: 600;
     font-size: 10px;
     letter-spacing: 0.5px;
-    border-top: 2px solid #475569;
+    border-top: 3px solid #cbd5e1;
 }
 
 /* Summary row styling */
@@ -165,7 +166,7 @@ h1 {
 
 .items-table tr.summary-row td {
     color: #475569;
-    text-transform: uppercase;
+    font-weight: 600;
     font-size: 10px;
     letter-spacing: 0.5px;
 }
@@ -177,9 +178,11 @@ h1 {
 
 .items-table tr.remaining-row td {
     color: #475569;
-    text-transform: uppercase;
+    font-weight: 600;
     font-size: 10px;
     letter-spacing: 0.5px;
+    border-top: 1px dashed #cbd5e1;
+    border-bottom: 1px solid #cbd5e1;
 }
 
 .items-table tr.remaining-row.complete td {
@@ -234,7 +237,7 @@ h1 {
 
 .modal-content {
     background: white;
-    border-radius: 12px;
+    border-radius: 6px;
     width: 90%;
     max-width: 500px;
     max-height: 90vh;
