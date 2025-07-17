@@ -105,17 +105,8 @@ function addItemToContainer(item, container) {
         `;
         table.appendChild(thead);
         
-        // Add goal row
+        // Add table body
         const tbody = document.createElement('tbody');
-        tbody.innerHTML = `
-            <tr class="goal-row">
-                <td class="item-name">Daily Goal</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-        `;
         table.appendChild(tbody);
         container.appendChild(table);
     }
@@ -176,7 +167,7 @@ function addItemToContainer(item, container) {
     
     // Insert row before the summary rows (if they exist)
     const tbody = table.querySelector('tbody');
-    const summaryRows = tbody.querySelectorAll('.summary-row, .remaining-row');
+    const summaryRows = tbody.querySelectorAll('.goal-row, .summary-row, .remaining-row');
     if (summaryRows.length > 0) {
         tbody.insertBefore(tr, summaryRows[0]);
     } else {
@@ -282,20 +273,20 @@ function updateMealSummary(category, totals) {
 
     const tbody = table.querySelector('tbody');
     
-    // Update goal row
-    const goalRow = tbody.querySelector('.goal-row');
-    if (goalRow) {
-        goalRow.innerHTML = `
-            <td class="item-name">Daily Goal</td>
-            <td>${formatNumber(totals.planned.calories)}</td>
-            <td>${Math.round(totals.planned.protein)}</td>
-            <td>${Math.round(totals.planned.carbs)}</td>
-            <td>${Math.round(totals.planned.fat)}</td>
-        `;
-    }
-
     // Remove existing summary rows
-    tbody.querySelectorAll('.summary-row, .remaining-row').forEach(row => row.remove());
+    tbody.querySelectorAll('.goal-row, .summary-row, .remaining-row').forEach(row => row.remove());
+
+    // Add goal row
+    const goalRow = document.createElement('tr');
+    goalRow.className = 'goal-row';
+    goalRow.innerHTML = `
+        <td class="item-name">Daily Goal</td>
+        <td>${formatNumber(totals.planned.calories)}</td>
+        <td>${Math.round(totals.planned.protein)}</td>
+        <td>${Math.round(totals.planned.carbs)}</td>
+        <td>${Math.round(totals.planned.fat)}</td>
+    `;
+    tbody.appendChild(goalRow);
 
     // Add eaten summary row
     const eatenRow = document.createElement('tr');
