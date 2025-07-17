@@ -218,8 +218,8 @@ form.addEventListener('submit', (e) => {
         console.log('Processing existing item');
         // Handle existing item
         amount = parseFloat(document.getElementById('itemAmount').value);
-        if (!amount) {
-            alert('Please enter an amount');
+        if (!amount || isNaN(amount)) {
+            alert('Please enter a valid amount');
             return;
         }
         
@@ -242,16 +242,30 @@ form.addEventListener('submit', (e) => {
         amount = parseFloat(document.getElementById('newAmount').value);
         unit = document.getElementById('newUnit').value;
         
-        if (!amount || !unit) {
-            alert('Please enter an amount and unit');
+        if (!amount || isNaN(amount)) {
+            alert('Please enter a valid amount');
+            return;
+        }
+        
+        if (!unit) {
+            alert('Please select a unit');
+            return;
+        }
+
+        const protein = parseFloat(document.getElementById('protein').value);
+        const carbs = parseFloat(document.getElementById('carbs').value);
+        const fat = parseFloat(document.getElementById('fat').value);
+
+        if (isNaN(protein) || isNaN(carbs) || isNaN(fat)) {
+            alert('Please enter valid numbers for protein, carbs, and fat');
             return;
         }
 
         nutrition = {
-            protein: Math.round(parseFloat(document.getElementById('protein').value) || 0),
-            carbs: Math.round(parseFloat(document.getElementById('carbs').value) || 0),
-            fat: Math.round(parseFloat(document.getElementById('fat').value) || 0),
-            calories: Math.round(parseFloat(document.getElementById('calories').value) || 0)
+            protein: Math.round(protein),
+            carbs: Math.round(carbs),
+            fat: Math.round(fat),
+            calories: Math.round(calculateCalories(protein, carbs, fat))
         };
 
         console.log('New item nutrition:', nutrition);
