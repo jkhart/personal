@@ -141,21 +141,8 @@ function addItemToContainer(item, container) {
         }
     }
 
-    // Add delete button
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'delete-btn';
-    deleteBtn.innerHTML = '×';
-    deleteBtn.title = 'Hide for today';
-    deleteBtn.onclick = (e) => {
-        e.preventDefault(); // Prevent label click
-        div.classList.add('hidden');
-        saveState();
-        updateAllNutritionSummaries();
-    };
-    
     div.appendChild(input);
     div.appendChild(label);
-    div.appendChild(deleteBtn);
     container.appendChild(div);
     
     // Add change event listener
@@ -172,7 +159,7 @@ function calculateMealNutrition(category) {
         consumed: { protein: 0, carbs: 0, fat: 0, calories: 0 }
     };
 
-    // Calculate goals from original diet items (unaffected by hidden state)
+    // Calculate goals from original diet items
     config.dietItems
         .filter(item => item.category === category && !item.isUserAdded)
         .forEach(item => {
@@ -186,13 +173,13 @@ function calculateMealNutrition(category) {
             }
         });
 
-    // Calculate consumed from visible items (including custom items)
+    // Calculate consumed items (including custom items)
     // Regular items
     config.dietItems
         .filter(item => item.category === category && !item.isUserAdded)
         .forEach(item => {
             const checkbox = document.getElementById(item.id);
-            if (checkbox && !checkbox.closest('.diet-item').classList.contains('hidden') && checkbox.checked) {
+            if (checkbox && checkbox.checked) {
                 const nutrition = calculateNutrition(item.id, item.amount, item.unit);
                 if (nutrition) {
                     totals.consumed.protein += Math.round(nutrition.protein);
@@ -208,7 +195,7 @@ function calculateMealNutrition(category) {
         .filter(item => item.category === category)
         .forEach(item => {
             const element = document.querySelector(`[data-custom-id="${item.id}"]`);
-            if (element && !element.classList.contains('hidden')) {
+            if (element) {
                 const checkbox = element.querySelector('input[type="checkbox"]');
                 if (checkbox && checkbox.checked) {
                     totals.consumed.protein += Math.round(item.nutrition.protein);
@@ -343,7 +330,6 @@ function updateDailySummary(totals) {
 function saveState() {
     const state = {
         checked: {},
-        hidden: {},
         customItems: customItems // Save the entire customItems array
     };
     
@@ -352,7 +338,6 @@ function saveState() {
         const itemElement = document.getElementById(item.id);
         if (itemElement) {
             state.checked[item.id] = itemElement.checked;
-            state.hidden[item.id] = itemElement.closest('.diet-item').classList.contains('hidden');
         }
     });
 
@@ -362,7 +347,6 @@ function saveState() {
         if (element) {
             const checkbox = element.querySelector('input[type="checkbox"]');
             state.checked[item.id] = checkbox?.checked || false;
-            state.hidden[item.id] = element.classList.contains('hidden');
         }
     });
     
@@ -388,7 +372,6 @@ function loadState() {
             const checkbox = document.getElementById(item.id);
             if (checkbox) {
                 checkbox.checked = false;
-                checkbox.closest('.diet-item').classList.remove('hidden');
             }
         });
         customItems = []; // Reset custom items
@@ -404,9 +387,6 @@ function loadState() {
         const checkbox = document.getElementById(item.id);
         if (checkbox) {
             checkbox.checked = data.state.checked[item.id] ?? checkbox.checked;
-            if (data.state.hidden[item.id]) {
-                checkbox.closest('.diet-item').classList.add('hidden');
-            }
         }
     });
 
@@ -421,9 +401,6 @@ function loadState() {
                 const checkbox = element.querySelector('input[type="checkbox"]');
                 if (checkbox) {
                     checkbox.checked = data.state.checked[item.id] ?? checkbox.checked;
-                }
-                if (data.state.hidden[item.id]) {
-                    element.classList.add('hidden');
                 }
             }
         }
