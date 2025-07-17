@@ -27,12 +27,6 @@ function initApp() {
     // Create sections for each meal category
     const categories = ['breakfast', 'lunch', 'dinner', 'dessert'];
     
-    // Create nutrition summary element
-    const nutritionSummary = document.createElement('div');
-    nutritionSummary.id = 'nutritionSummary';
-    nutritionSummary.className = 'nutrition-summary';
-    container.appendChild(nutritionSummary);
-    
     categories.forEach(category => {
         // Create category section
         const section = document.createElement('div');
@@ -70,13 +64,6 @@ function initApp() {
         });
         
         section.appendChild(itemsContainer);
-
-        // Add meal summary table
-        const summaryTable = document.createElement('div');
-        summaryTable.className = 'meal-summary-table';
-        summaryTable.id = `${category}Summary`;
-        section.appendChild(summaryTable);
-        
         container.appendChild(section);
     });
     
@@ -119,8 +106,18 @@ function addItemToContainer(item, container) {
         `;
         table.appendChild(thead);
         
-        // Add table body
+        // Add goal row
         const tbody = document.createElement('tbody');
+        tbody.innerHTML = `
+            <tr class="goal-row">
+                <td class="item-check"></td>
+                <td class="item-name">Daily Goal</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+        `;
         table.appendChild(tbody);
         container.appendChild(table);
     }
@@ -191,8 +188,14 @@ function addItemToContainer(item, container) {
         }
     }
     
-    // Add row to table body
-    table.querySelector('tbody').appendChild(tr);
+    // Insert row before the summary rows (if they exist)
+    const tbody = table.querySelector('tbody');
+    const summaryRows = tbody.querySelectorAll('.summary-row, .remaining-row');
+    if (summaryRows.length > 0) {
+        tbody.insertBefore(tr, summaryRows[0]);
+    } else {
+        tbody.appendChild(tr);
+    }
     
     // Add change event listener
     input.addEventListener('change', () => {
@@ -291,47 +294,61 @@ function updateAllNutritionSummaries() {
 
 // Update the meal summary display
 function updateMealSummary(category, totals) {
-    const summary = document.getElementById(`${category}Summary`);
-    if (summary) {
-        const remaining = {
-            protein: Math.round(totals.planned.protein - totals.consumed.protein),
-            carbs: Math.round(totals.planned.carbs - totals.consumed.carbs),
-            fat: Math.round(totals.planned.fat - totals.consumed.fat),
-            calories: Math.round(totals.planned.calories - totals.consumed.calories)
-        };
+    const container = document.getElementById(`${category}Items`);
+    const table = container.querySelector('.items-table');
+    if (!table) return;
 
-        summary.innerHTML = `
-            <table>
-                <tr>
-                    <th></th>
-                    <th>Calories</th>
-                    <th>Protein</th>
-                    <th>Carbs</th>
-                    <th>Fat</th>
-                </tr>
-                <tr class="planned-row">
-                    <td>Goal</td>
-                    <td>${formatNumber(totals.planned.calories)}</td>
-                    <td>${Math.round(totals.planned.protein)}</td>
-                    <td>${Math.round(totals.planned.carbs)}</td>
-                    <td>${Math.round(totals.planned.fat)}</td>
-                </tr>
-                <tr class="consumed-row">
-                    <td>Eaten</td>
-                    <td>${formatNumber(totals.consumed.calories)}</td>
-                    <td>${Math.round(totals.consumed.protein)}</td>
-                    <td>${Math.round(totals.consumed.carbs)}</td>
-                    <td>${Math.round(totals.consumed.fat)}</td>
-                </tr>
-                <tr class="remaining-row ${remaining.calories <= 0 ? 'complete' : ''}">
-                    <td>Left</td>
-                    <td class="${remaining.calories < 0 ? 'negative' : ''}">${formatNumber(remaining.calories)}</td>
-                    <td class="${remaining.protein < 0 ? 'negative' : ''}">${remaining.protein}</td>
-                    <td class="${remaining.carbs < 0 ? 'negative' : ''}">${remaining.carbs}</td>
-                    <td class="${remaining.fat < 0 ? 'negative' : ''}">${remaining.fat}</td>
-                </tr>
-            </table>
+    const tbody = table.querySelector('tbody');
+    
+    // Update goal row
+    const goalRow = tbody.querySelector('.goal-row');
+    if (goalRow) {
+        goalRow.innerHTML = `
+            <td class="item-check"></td>
+            <td class="item-name">Daily Goal</td>
+            <td>${formatNumber(totals.planned.calories)}</td>
+            <td>${Math.round(totals.planned.protein)}</td>
+            <td>${Math.round(totals.planned.carbs)}</td>
+            <td>${Math.round(totals.planned.fat)}</td>
         `;
+    }
+
+    // Remove existing summary rows
+    tbody.querySelectorAll('.summary-row, .remaining-row').forEach(row => row.remove());
+
+    // Add eaten summary row
+    const eatenRow = document.createElement('tr');
+    eatenRow.className = 'summary-row';
+    eatenRow.innerHTML = `
+        <td class="item-check"></td>
+        <td class="item-name">Total Eaten</td>
+        <td>${formatNumber(totals.consumed.calories)}</td>
+        <td>${Math.round(totals.consumed.protein)}</td>
+        <td>${Math.round(totals.consumed.carbs)}</td>
+        <td>${Math.round(totals.consumed.fat)}</td>
+    `;
+    tbody.appendChild(eatenRow);
+
+    // Calculate and add remaining row
+    const remaining = {
+        protein: Math.round(totals.planned.protein - totals.consumed.protein),
+        carbs: Math.round(totals.planned.carbs - totals.consumed.carbs),
+        fat: Math.round(totals.planned.fat - totals.consumed.fat),
+        calories: Math.round(totals.planned.calories - totals.consumed.calories)
+    };
+
+    const remainingRow = document.createElement('tr');
+    remainingRow.className = `remaining-row ${remaining.calories <= 0 ? 'complete' : ''}`;
+    remainingRow.innerHTML = `
+        <td class="item-check"></td>
+        <td class="item-name">Remaining</td>
+        <td class="${remaining.calories < 0 ? 'negative' : ''}">${formatNumber(remaining.calories)}</td>
+        <td class="${remaining.protein < 0 ? 'negative' : ''}">${remaining.protein}</td>
+        <td class="${remaining.carbs < 0 ? 'negative' : ''}">${remaining.carbs}</td>
+        <td class="${remaining.fat < 0 ? 'negative' : ''}">${remaining.fat}</td>
+    `;
+    tbody.appendChild(remainingRow);
+}
     }
 }
 
