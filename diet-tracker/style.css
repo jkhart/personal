@@ -124,6 +124,27 @@ h1 {
 .items-table td.item-name {
     text-align: left;
     width: 40%;
+    padding-right: 12px;
+}
+
+.item-name-text {
+    font-size: 13px;
+    color: #1e293b;
+    margin-bottom: 2px;
+}
+
+.item-amount {
+    font-size: 11px;
+    color: #64748b;
+}
+
+.items-table tr.diet-item.consumed .item-name-text {
+    text-decoration: line-through;
+    color: #94a3b8;
+}
+
+.items-table tr.diet-item.consumed .item-amount {
+    color: #94a3b8;
 }
 
 .items-table thead th {
@@ -200,10 +221,6 @@ h1 {
     transition: all 0.2s ease;
 }
 
-.items-table tr.diet-item:hover {
-    background: #f8fafc;
-}
-
 .items-table tr.diet-item.consumed {
     font-style: italic;
     color: #94a3b8;
@@ -211,10 +228,6 @@ h1 {
 
 .items-table tr.diet-item.consumed td {
     text-decoration: line-through;
-}
-
-.items-table tr.diet-item.consumed:hover {
-    background: #f1f5f9;
 }
 
 /* Modal Base Styles */

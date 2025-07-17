@@ -112,10 +112,17 @@ function addItemToContainer(item, container) {
     }
     tr.dataset.itemId = item.id;
     
-    // Create name cell
+    // Create name cell with amount underneath
     const nameCell = document.createElement('td');
     nameCell.className = 'item-name';
-    nameCell.textContent = `${item.name} (${formatUnit(item.amount, item.unit)})`;
+    const nameSpan = document.createElement('div');
+    nameSpan.className = 'item-name-text';
+    nameSpan.textContent = item.name;
+    const amountSpan = document.createElement('div');
+    amountSpan.className = 'item-amount';
+    amountSpan.textContent = formatUnit(item.amount, item.unit);
+    nameCell.appendChild(nameSpan);
+    nameCell.appendChild(amountSpan);
     
     // Get nutrition values
     let nutrition;
