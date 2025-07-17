@@ -15,7 +15,10 @@
     <div class="container">
         <div class="app-header">
             <h1>Daily Diet Tracker</h1>
-            <button id="resetButton" class="reset-btn" title="Reset all data">Reset</button>
+            <div class="header-buttons">
+                <button id="addButton" class="add-btn" title="Add item">+</button>
+                <button id="resetButton" class="reset-btn" title="Reset all data">Reset</button>
+            </div>
         </div>
         <div id="dietItems">
             <!-- Items will be populated by JavaScript -->
@@ -35,6 +38,17 @@
                         <label for="itemName">Name</label>
                         <input type="text" id="itemName" required autocomplete="off">
                         <div id="autocompleteResults" class="autocomplete-results"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mealCategory">Meal</label>
+                        <select id="mealCategory" required>
+                            <option value="">Select a meal...</option>
+                            <option value="breakfast">Breakfast</option>
+                            <option value="lunch">Lunch</option>
+                            <option value="dinner">Dinner</option>
+                            <option value="dessert">Dessert</option>
+                        </select>
                     </div>
                     
                     <!-- Existing Item Fields -->

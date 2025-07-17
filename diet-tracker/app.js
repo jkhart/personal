@@ -23,6 +23,11 @@ function initApp() {
             location.reload();
         }
     });
+
+    // Add button functionality
+    document.getElementById('addButton').addEventListener('click', () => {
+        showAddItemModal();
+    });
     
     // Create sections for each meal category
     const categories = ['breakfast', 'lunch', 'dinner', 'dessert'];
@@ -32,22 +37,10 @@ function initApp() {
         const section = document.createElement('div');
         section.className = 'meal-category';
         
-        // Add category header with add button
-        const headerContainer = document.createElement('div');
-        headerContainer.className = 'category-header';
-        
+        // Add category header
         const header = document.createElement('h2');
         header.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-        
-        const addButton = document.createElement('button');
-        addButton.className = 'add-btn';
-        addButton.innerHTML = '+';
-        addButton.title = 'Add item';
-        addButton.onclick = () => showAddItemModal(category);
-        
-        headerContainer.appendChild(header);
-        headerContainer.appendChild(addButton);
-        section.appendChild(headerContainer);
+        section.appendChild(header);
 
         // Create items container
         const itemsContainer = document.createElement('div');

@@ -9,6 +9,7 @@ const nameInput = document.getElementById('itemName');
 const existingItemFields = document.getElementById('existingItemFields');
 const newItemFields = document.getElementById('newItemFields');
 const autocompleteResults = document.getElementById('autocompleteResults');
+const categorySelect = document.getElementById('mealCategory');
 
 // Calculate calories from macros
 function calculateCalories(protein, carbs, fat) {
@@ -16,10 +17,10 @@ function calculateCalories(protein, carbs, fat) {
 }
 
 // Show modal
-export function showAddItemModal(category) {
-    currentCategory = category;
+export function showAddItemModal() {
     modal.classList.add('show');
     nameInput.value = '';
+    categorySelect.value = '';
     existingItemFields.style.display = 'none';
     newItemFields.style.display = 'none';
     nameInput.focus();
@@ -73,15 +74,12 @@ function handleAutocomplete(input) {
     }
 }
 
-// Track currently selected item
-let selectedItemId = null;
-
 // Show existing item fields
 function showExistingItemFields(itemId) {
     const item = nutritionalInfo[itemId];
     if (!item) return;
 
-    selectedItemId = itemId;
+    currentCategory = categorySelect.value;
     nameInput.value = formatDisplayName(itemId);
     document.getElementById('itemAmount').value = item.servingSize;
     document.getElementById('unitLabel').textContent = item.servingUnit;
@@ -94,7 +92,7 @@ function showExistingItemFields(itemId) {
 
 // Show new item fields
 function showNewItemFields() {
-    selectedItemId = null;
+    currentCategory = categorySelect.value;
     existingItemFields.style.display = 'none';
     newItemFields.style.display = 'block';
     document.getElementById('saveToMasterList').style.display = 'block';
@@ -135,6 +133,11 @@ autocompleteResults.addEventListener('click', (e) => {
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
+    
+    if (!categorySelect.value) {
+        alert('Please select a meal category');
+        return;
+    }
     
     const name = nameInput.value;
     let nutrition;
@@ -186,7 +189,7 @@ form.addEventListener('submit', (e) => {
         if (document.getElementById('saveToMasterListCheckbox').checked) {
             const masterItem = {
                 name,
-                category: currentCategory,
+                category: categorySelect.value,
                 amount,
                 unit,
                 nutrition
@@ -204,7 +207,7 @@ form.addEventListener('submit', (e) => {
     const customItem = {
         id: `custom_${Date.now()}`,
         name,
-        category: currentCategory,
+        category: categorySelect.value,
         amount,
         unit,
         nutrition,
