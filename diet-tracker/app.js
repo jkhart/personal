@@ -349,8 +349,6 @@ function updateMealSummary(category, totals) {
     `;
     tbody.appendChild(remainingRow);
 }
-    }
-}
 
 // Update the daily summary display
 function updateDailySummary(totals) {
