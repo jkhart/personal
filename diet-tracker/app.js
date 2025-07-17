@@ -98,58 +98,114 @@ function initApp() {
 
 // Add item to container
 function addItemToContainer(item, container) {
-    const div = document.createElement('div');
-    div.className = 'diet-item';
-    if (item.isCustom) {
-        div.dataset.customId = item.id;
+    // Create or get the table
+    let table = container.querySelector('table');
+    if (!table) {
+        // Create table structure if it doesn't exist
+        table = document.createElement('table');
+        table.className = 'items-table';
+        
+        // Add header row
+        const thead = document.createElement('thead');
+        thead.innerHTML = `
+            <tr>
+                <th class="item-check"></th>
+                <th class="item-name">Item</th>
+                <th>Calories</th>
+                <th>Protein</th>
+                <th>Carbs</th>
+                <th>Fat</th>
+            </tr>
+        `;
+        table.appendChild(thead);
+        
+        // Add table body
+        const tbody = document.createElement('tbody');
+        table.appendChild(tbody);
+        container.appendChild(table);
     }
     
+    // Create new row
+    const tr = document.createElement('tr');
+    tr.className = 'diet-item';
+    if (item.isCustom) {
+        tr.dataset.customId = item.id;
+    }
+    
+    // Create checkbox cell
+    const checkCell = document.createElement('td');
+    checkCell.className = 'item-check';
     const input = document.createElement('input');
     input.type = 'checkbox';
     input.id = item.id;
     input.checked = true; // Set checkbox to checked by default
+    checkCell.appendChild(input);
     
+    // Create name cell
+    const nameCell = document.createElement('td');
+    nameCell.className = 'item-name';
     const label = document.createElement('label');
     label.htmlFor = item.id;
-    
     if (item.isCustom) {
         label.textContent = item.name;
-        const nutritionInfo = document.createElement('div');
-        nutritionInfo.className = 'nutrition-info';
-        const roundedNutrition = {
+    } else {
+        label.textContent = `${item.name} (${formatUnit(item.amount, item.unit)})`;
+    }
+    nameCell.appendChild(label);
+    
+    // Get nutrition values
+    let nutrition;
+    if (item.isCustom) {
+        nutrition = {
             calories: Math.round(item.nutrition.calories),
             protein: Math.round(item.nutrition.protein),
             carbs: Math.round(item.nutrition.carbs),
             fat: Math.round(item.nutrition.fat)
         };
-        nutritionInfo.textContent = `Cal:${formatNumber(roundedNutrition.calories)} P:${roundedNutrition.protein} C:${roundedNutrition.carbs} F:${roundedNutrition.fat}`;
-        label.appendChild(nutritionInfo);
     } else {
-        label.textContent = `${item.name} (${formatUnit(item.amount, item.unit)})`;
-        const nutrition = calculateNutrition(item.id, item.amount, item.unit);
+        nutrition = calculateNutrition(item.id, item.amount, item.unit);
         if (nutrition) {
-            const nutritionInfo = document.createElement('div');
-            nutritionInfo.className = 'nutrition-info';
-            const roundedNutrition = {
+            nutrition = {
                 calories: Math.round(nutrition.calories),
                 protein: Math.round(nutrition.protein),
                 carbs: Math.round(nutrition.carbs),
                 fat: Math.round(nutrition.fat)
             };
-            nutritionInfo.textContent = `Cal:${formatNumber(roundedNutrition.calories)} P:${roundedNutrition.protein} C:${roundedNutrition.carbs} F:${roundedNutrition.fat}`;
-            label.appendChild(nutritionInfo);
         }
     }
-
-    div.appendChild(input);
-    div.appendChild(label);
-    container.appendChild(div);
+    
+    // Add cells to row
+    tr.appendChild(checkCell);
+    tr.appendChild(nameCell);
+    
+    // Add nutrition cells
+    if (nutrition) {
+        tr.appendChild(createCell(formatNumber(nutrition.calories)));
+        tr.appendChild(createCell(nutrition.protein));
+        tr.appendChild(createCell(nutrition.carbs));
+        tr.appendChild(createCell(nutrition.fat));
+    } else {
+        // Add empty cells if no nutrition info
+        for (let i = 0; i < 4; i++) {
+            tr.appendChild(createCell('-'));
+        }
+    }
+    
+    // Add row to table body
+    table.querySelector('tbody').appendChild(tr);
     
     // Add change event listener
     input.addEventListener('change', () => {
         saveState();
         updateAllNutritionSummaries();
     });
+}
+
+// Helper function to create a table cell
+function createCell(content) {
+    const td = document.createElement('td');
+    td.textContent = content;
+    return td;
 }
 
 // Calculate nutrition totals for a specific meal
