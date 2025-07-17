@@ -25,6 +25,15 @@ export function showAddItemModal() {
     existingItemFields.style.display = 'none';
     newItemFields.style.display = 'none';
     selectedItemId = null; // Reset selected item
+    
+    // Reset all required attributes
+    document.getElementById('itemAmount').required = false;
+    document.getElementById('newAmount').required = false;
+    document.getElementById('newUnit').required = false;
+    document.getElementById('protein').required = false;
+    document.getElementById('carbs').required = false;
+    document.getElementById('fat').required = false;
+    
     nameInput.focus();
 }
 
@@ -34,6 +43,14 @@ function closeModal() {
     modal.classList.remove('show');
     form.reset();
     selectedItemId = null; // Reset selected item
+    
+    // Reset all required attributes
+    document.getElementById('itemAmount').required = false;
+    document.getElementById('newAmount').required = false;
+    document.getElementById('newUnit').required = false;
+    document.getElementById('protein').required = false;
+    document.getElementById('carbs').required = false;
+    document.getElementById('fat').required = false;
 }
 
 // Format display name from ID
@@ -90,11 +107,24 @@ function showExistingItemFields(itemId) {
 
     selectedItemId = itemId; // Store the selected item ID
     nameInput.value = formatDisplayName(itemId);
-    document.getElementById('itemAmount').value = item.servingSize;
+    
+    // Configure existing item fields
+    const itemAmountInput = document.getElementById('itemAmount');
+    itemAmountInput.value = item.servingSize;
+    itemAmountInput.required = true;
     document.getElementById('unitLabel').textContent = item.servingUnit;
     
+    // Show/hide appropriate fields
     existingItemFields.style.display = 'block';
     newItemFields.style.display = 'none';
+    
+    // Disable requirements for new item fields
+    document.getElementById('newAmount').required = false;
+    document.getElementById('newUnit').required = false;
+    document.getElementById('protein').required = false;
+    document.getElementById('carbs').required = false;
+    document.getElementById('fat').required = false;
+    
     document.getElementById('saveToMasterList').style.display = 'none';
     autocompleteResults.classList.remove('show');
 }
@@ -103,15 +133,29 @@ function showExistingItemFields(itemId) {
 function showNewItemFields() {
     console.log('Showing new item fields');
     selectedItemId = null; // Clear selected item
+    
+    // Hide/show appropriate fields
     existingItemFields.style.display = 'none';
     newItemFields.style.display = 'block';
+    
+    // Enable requirements for new item fields
+    document.getElementById('newAmount').required = true;
+    document.getElementById('newUnit').required = true;
+    document.getElementById('protein').required = true;
+    document.getElementById('carbs').required = true;
+    document.getElementById('fat').required = true;
+    
+    // Disable requirements for existing item fields
+    document.getElementById('itemAmount').required = false;
+    
     document.getElementById('saveToMasterList').style.display = 'block';
     
-    // Clear and enable input fields
+    // Clear input fields
     document.getElementById('protein').value = '';
     document.getElementById('carbs').value = '';
     document.getElementById('fat').value = '';
     document.getElementById('calories').value = '';
+    document.getElementById('newAmount').value = '';
 }
 
 // Update calories when macros change
