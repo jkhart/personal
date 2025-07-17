@@ -176,42 +176,72 @@ h1 {
 
 /* Goal row styling */
 .items-table tr.goal-row {
-    background: #f0f9ff;
-    font-weight: 500;
+    background: #f8fafc;
+    font-weight: 600;
 }
 
 .items-table tr.goal-row td {
-    color: #2563eb;
+    color: #475569;
     border-bottom: 2px solid #e2e8f0;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.5px;
 }
 
 /* Summary row styling */
 .items-table tr.summary-row {
-    background: #f7f7f7;
-    font-weight: 500;
+    background: #f8fafc;
+    font-weight: 600;
 }
 
 .items-table tr.summary-row td {
-    color: #4a5568;
+    color: #475569;
     border-top: 2px solid #e2e8f0;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.5px;
 }
 
 /* Remaining row styling */
 .items-table tr.remaining-row {
-    background: #f0f9ff;
-    font-weight: 500;
+    background: #f8fafc;
+    font-weight: 600;
 }
 
 .items-table tr.remaining-row td {
-    color: #2563eb;
+    color: #475569;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.5px;
 }
 
 .items-table tr.remaining-row.complete td {
-    color: #059669;
+    color: #475569;
 }
 
 .items-table tr.remaining-row td.negative {
     color: #dc2626;
+}
+
+/* Regular item styling */
+.items-table tr.diet-item {
+    background: white;
+}
+
+.items-table tr.diet-item:hover {
+    background: #f8fafc;
+}
+
+/* Add divider before summary rows */
+.items-table tr.summary-row td {
+    border-top: 2px solid #e2e8f0;
+    padding-top: 8px;
+}
+
+/* Add spacing after goal row */
+.items-table tr.goal-row td {
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 8px;
 }
 
 .nutrition-summary {
