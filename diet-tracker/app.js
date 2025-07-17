@@ -225,14 +225,18 @@ function calculateMealNutrition(category) {
         .filter(item => item.category === category && !item.isUserAdded)
         .forEach(item => {
             const row = document.querySelector(`tr[data-item-id="${item.id}"]`);
-            if (row && row.classList.contains('consumed')) {
-                const nutrition = calculateNutrition(item.id, item.amount, item.unit);
-                if (nutrition) {
+            const nutrition = calculateNutrition(item.id, item.amount, item.unit);
+            if (nutrition) {
+                if (row?.classList.contains('consumed')) {
                     totals.consumed.protein += Math.round(nutrition.protein);
                     totals.consumed.carbs += Math.round(nutrition.carbs);
                     totals.consumed.fat += Math.round(nutrition.fat);
                     totals.consumed.calories += Math.round(nutrition.calories);
                 }
+                totals.planned.protein += Math.round(nutrition.protein);
+                totals.planned.carbs += Math.round(nutrition.carbs);
+                totals.planned.fat += Math.round(nutrition.fat);
+                totals.planned.calories += Math.round(nutrition.calories);
             }
         });
 
@@ -241,7 +245,7 @@ function calculateMealNutrition(category) {
         .filter(item => item.category === category)
         .forEach(item => {
             const row = document.querySelector(`tr[data-custom-id="${item.id}"]`);
-            if (row && row.classList.contains('consumed')) {
+            if (row?.classList.contains('consumed')) {
                 totals.consumed.protein += Math.round(item.nutrition.protein);
                 totals.consumed.carbs += Math.round(item.nutrition.carbs);
                 totals.consumed.fat += Math.round(item.nutrition.fat);
@@ -414,7 +418,19 @@ function loadState() {
     const saved = localStorage.getItem('dietTrackerState');
     if (!saved) return;
     
-    const data = JSON.parse(saved);
+    let data;
+    try {
+        data = JSON.parse(saved);
+    } catch (e) {
+        console.error('Error parsing saved state:', e);
+        return;
+    }
+
+    // Initialize state if missing
+    if (!data.state || !data.state.consumed) {
+        data.state = { consumed: {}, customItems: [] };
+    }
+    
     const today = new Date().toDateString();
     
     // Reset if it's a new day
@@ -436,7 +452,7 @@ function loadState() {
     // Restore regular items state
     config.dietItems.forEach(item => {
         const row = document.querySelector(`tr[data-item-id="${item.id}"]`);
-        if (row && data.state.consumed[item.id]) {
+        if (row && data.state.consumed && data.state.consumed[item.id]) {
             row.classList.add('consumed');
         }
     });
@@ -448,7 +464,7 @@ function loadState() {
             addItemToContainer(item, container);
             // Restore custom item state
             const row = document.querySelector(`tr[data-custom-id="${item.id}"]`);
-            if (row && data.state.consumed[item.id]) {
+            if (row && data.state.consumed && data.state.consumed[item.id]) {
                 row.classList.add('consumed');
             }
         }
