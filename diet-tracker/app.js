@@ -96,7 +96,6 @@ function addItemToContainer(item, container) {
         const thead = document.createElement('thead');
         thead.innerHTML = `
             <tr>
-                <th class="item-check"></th>
                 <th class="item-name">Item</th>
                 <th>Calories</th>
                 <th>Protein</th>
@@ -110,7 +109,6 @@ function addItemToContainer(item, container) {
         const tbody = document.createElement('tbody');
         tbody.innerHTML = `
             <tr class="goal-row">
-                <td class="item-check"></td>
                 <td class="item-name">Daily Goal</td>
                 <td>-</td>
                 <td>-</td>
@@ -128,27 +126,16 @@ function addItemToContainer(item, container) {
     if (item.isCustom) {
         tr.dataset.customId = item.id;
     }
-    
-    // Create checkbox cell
-    const checkCell = document.createElement('td');
-    checkCell.className = 'item-check';
-    const input = document.createElement('input');
-    input.type = 'checkbox';
-    input.id = item.id;
-    input.checked = true; // Set checkbox to checked by default
-    checkCell.appendChild(input);
+    tr.dataset.itemId = item.id;
     
     // Create name cell
     const nameCell = document.createElement('td');
     nameCell.className = 'item-name';
-    const label = document.createElement('label');
-    label.htmlFor = item.id;
     if (item.isCustom) {
-        label.textContent = item.name;
+        nameCell.textContent = item.name;
     } else {
-        label.textContent = `${item.name} (${formatUnit(item.amount, item.unit)})`;
+        nameCell.textContent = `${item.name} (${formatUnit(item.amount, item.unit)})`;
     }
-    nameCell.appendChild(label);
     
     // Get nutrition values
     let nutrition;
@@ -172,7 +159,6 @@ function addItemToContainer(item, container) {
     }
     
     // Add cells to row
-    tr.appendChild(checkCell);
     tr.appendChild(nameCell);
     
     // Add nutrition cells
@@ -197,8 +183,9 @@ function addItemToContainer(item, container) {
         tbody.appendChild(tr);
     }
     
-    // Add change event listener
-    input.addEventListener('change', () => {
+    // Add click event listener
+    tr.addEventListener('click', () => {
+        tr.classList.toggle('consumed');
         saveState();
         updateAllNutritionSummaries();
     });
@@ -237,8 +224,8 @@ function calculateMealNutrition(category) {
     config.dietItems
         .filter(item => item.category === category && !item.isUserAdded)
         .forEach(item => {
-            const checkbox = document.getElementById(item.id);
-            if (checkbox && checkbox.checked) {
+            const row = document.querySelector(`tr[data-item-id="${item.id}"]`);
+            if (row && row.classList.contains('consumed')) {
                 const nutrition = calculateNutrition(item.id, item.amount, item.unit);
                 if (nutrition) {
                     totals.consumed.protein += Math.round(nutrition.protein);
@@ -249,19 +236,16 @@ function calculateMealNutrition(category) {
             }
         });
 
-    // Custom items (only affect consumed totals when checked)
+    // Custom items (only affect consumed totals when marked as consumed)
     customItems
         .filter(item => item.category === category)
         .forEach(item => {
-            const element = document.querySelector(`[data-custom-id="${item.id}"]`);
-            if (element) {
-                const checkbox = element.querySelector('input[type="checkbox"]');
-                if (checkbox && checkbox.checked) {
-                    totals.consumed.protein += Math.round(item.nutrition.protein);
-                    totals.consumed.carbs += Math.round(item.nutrition.carbs);
-                    totals.consumed.fat += Math.round(item.nutrition.fat);
-                    totals.consumed.calories += Math.round(item.nutrition.calories);
-                }
+            const row = document.querySelector(`tr[data-custom-id="${item.id}"]`);
+            if (row && row.classList.contains('consumed')) {
+                totals.consumed.protein += Math.round(item.nutrition.protein);
+                totals.consumed.carbs += Math.round(item.nutrition.carbs);
+                totals.consumed.fat += Math.round(item.nutrition.fat);
+                totals.consumed.calories += Math.round(item.nutrition.calories);
             }
         });
 
@@ -304,7 +288,6 @@ function updateMealSummary(category, totals) {
     const goalRow = tbody.querySelector('.goal-row');
     if (goalRow) {
         goalRow.innerHTML = `
-            <td class="item-check"></td>
             <td class="item-name">Daily Goal</td>
             <td>${formatNumber(totals.planned.calories)}</td>
             <td>${Math.round(totals.planned.protein)}</td>
@@ -320,7 +303,6 @@ function updateMealSummary(category, totals) {
     const eatenRow = document.createElement('tr');
     eatenRow.className = 'summary-row';
     eatenRow.innerHTML = `
-        <td class="item-check"></td>
         <td class="item-name">Total Eaten</td>
         <td>${formatNumber(totals.consumed.calories)}</td>
         <td>${Math.round(totals.consumed.protein)}</td>
@@ -340,7 +322,6 @@ function updateMealSummary(category, totals) {
     const remainingRow = document.createElement('tr');
     remainingRow.className = `remaining-row ${remaining.calories <= 0 ? 'complete' : ''}`;
     remainingRow.innerHTML = `
-        <td class="item-check"></td>
         <td class="item-name">Remaining</td>
         <td class="${remaining.calories < 0 ? 'negative' : ''}">${formatNumber(remaining.calories)}</td>
         <td class="${remaining.protein < 0 ? 'negative' : ''}">${remaining.protein}</td>
@@ -400,24 +381,23 @@ function updateDailySummary(totals) {
 // Save the current state
 function saveState() {
     const state = {
-        checked: {},
+        consumed: {},
         customItems: customItems // Save the entire customItems array
     };
     
     // Save regular items state
     config.dietItems.forEach(item => {
-        const itemElement = document.getElementById(item.id);
-        if (itemElement) {
-            state.checked[item.id] = itemElement.checked;
+        const row = document.querySelector(`tr[data-item-id="${item.id}"]`);
+        if (row) {
+            state.consumed[item.id] = row.classList.contains('consumed');
         }
     });
 
     // Save custom items state
     customItems.forEach(item => {
-        const element = document.querySelector(`[data-custom-id="${item.id}"]`);
-        if (element) {
-            const checkbox = element.querySelector('input[type="checkbox"]');
-            state.checked[item.id] = checkbox?.checked || false;
+        const row = document.querySelector(`tr[data-custom-id="${item.id}"]`);
+        if (row) {
+            state.consumed[item.id] = row.classList.contains('consumed');
         }
     });
     
@@ -440,9 +420,9 @@ function loadState() {
     // Reset if it's a new day
     if (data.date !== today) {
         config.dietItems.forEach(item => {
-            const checkbox = document.getElementById(item.id);
-            if (checkbox) {
-                checkbox.checked = false;
+            const row = document.querySelector(`tr[data-item-id="${item.id}"]`);
+            if (row) {
+                row.classList.remove('consumed');
             }
         });
         customItems = []; // Reset custom items
@@ -455,9 +435,9 @@ function loadState() {
     
     // Restore regular items state
     config.dietItems.forEach(item => {
-        const checkbox = document.getElementById(item.id);
-        if (checkbox) {
-            checkbox.checked = data.state.checked[item.id] ?? checkbox.checked;
+        const row = document.querySelector(`tr[data-item-id="${item.id}"]`);
+        if (row && data.state.consumed[item.id]) {
+            row.classList.add('consumed');
         }
     });
 
@@ -467,12 +447,9 @@ function loadState() {
         if (container) {
             addItemToContainer(item, container);
             // Restore custom item state
-            const element = document.querySelector(`[data-custom-id="${item.id}"]`);
-            if (element) {
-                const checkbox = element.querySelector('input[type="checkbox"]');
-                if (checkbox) {
-                    checkbox.checked = data.state.checked[item.id] ?? checkbox.checked;
-                }
+            const row = document.querySelector(`tr[data-custom-id="${item.id}"]`);
+            if (row && data.state.consumed[item.id]) {
+                row.classList.add('consumed');
             }
         }
     });
