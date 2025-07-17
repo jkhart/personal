@@ -115,11 +115,7 @@ function addItemToContainer(item, container) {
     // Create name cell
     const nameCell = document.createElement('td');
     nameCell.className = 'item-name';
-    if (item.isCustom) {
-        nameCell.textContent = item.name;
-    } else {
-        nameCell.textContent = `${item.name} (${formatUnit(item.amount, item.unit)})`;
-    }
+    nameCell.textContent = `${item.name} (${formatUnit(item.amount, item.unit)})`;
     
     // Get nutrition values
     let nutrition;
