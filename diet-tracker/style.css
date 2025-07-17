@@ -110,11 +110,10 @@ h1 {
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
-.items-table th,
 .items-table td {
     padding: 6px;
     text-align: right;
-    border-bottom: 1px solid #e2e8f0;
+    border-top: 1px solid #e2e8f0;
 }
 
 .items-table tbody tr:last-child td {
@@ -136,14 +135,10 @@ h1 {
 
 .items-table thead th {
     background: #edf2f7;
-    font-weight: 500;
+    font-weight: 800;
     color: #2d3748;
     font-size: 11px;
     white-space: nowrap;
-}
-
-.items-table tbody tr:hover {
-    background: #fff;
 }
 
 .items-table input[type="checkbox"] {
@@ -177,26 +172,23 @@ h1 {
 /* Goal row styling */
 .items-table tr.goal-row {
     background: #f8fafc;
-    font-weight: 600;
 }
 
 .items-table tr.goal-row td {
     color: #475569;
-    border-bottom: 2px solid #e2e8f0;
     text-transform: uppercase;
     font-size: 10px;
     letter-spacing: 0.5px;
+    border-top: 2px solid #475569;
 }
 
 /* Summary row styling */
 .items-table tr.summary-row {
     background: #f8fafc;
-    font-weight: 600;
 }
 
 .items-table tr.summary-row td {
     color: #475569;
-    border-top: 2px solid #e2e8f0;
     text-transform: uppercase;
     font-size: 10px;
     letter-spacing: 0.5px;
@@ -205,7 +197,6 @@ h1 {
 /* Remaining row styling */
 .items-table tr.remaining-row {
     background: #f8fafc;
-    font-weight: 600;
 }
 
 .items-table tr.remaining-row td {
@@ -247,18 +238,6 @@ h1 {
     background: #f1f5f9;
 }
 
-/* Add divider before summary rows */
-.items-table tr.summary-row td {
-    border-top: 2px solid #e2e8f0;
-    padding-top: 8px;
-}
-
-/* Add spacing after goal row */
-.items-table tr.goal-row td {
-    border-bottom: 2px solid #e2e8f0;
-    padding-bottom: 8px;
-}
-
 .nutrition-summary {
     background: white;
     border-radius: 12px;
@@ -295,7 +274,6 @@ th {
 
 td {
     padding: 8px;
-    border-top: 1px solid #e2e8f0;
 }
 
 /* First column (labels) */

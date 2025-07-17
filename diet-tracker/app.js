@@ -280,7 +280,7 @@ function updateMealSummary(category, totals) {
     const goalRow = document.createElement('tr');
     goalRow.className = 'goal-row';
     goalRow.innerHTML = `
-        <td class="item-name">Daily Goal</td>
+        <td class="item-name">Goal</td>
         <td>${formatNumber(totals.planned.calories)}</td>
         <td>${Math.round(totals.planned.protein)}</td>
         <td>${Math.round(totals.planned.carbs)}</td>
@@ -292,7 +292,7 @@ function updateMealSummary(category, totals) {
     const eatenRow = document.createElement('tr');
     eatenRow.className = 'summary-row';
     eatenRow.innerHTML = `
-        <td class="item-name">Total Eaten</td>
+        <td class="item-name">Consumed</td>
         <td>${formatNumber(totals.consumed.calories)}</td>
         <td>${Math.round(totals.consumed.protein)}</td>
         <td>${Math.round(totals.consumed.carbs)}</td>
