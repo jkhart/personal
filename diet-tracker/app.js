@@ -205,13 +205,12 @@ function calculateMealNutrition(category) {
         consumed: { protein: 0, carbs: 0, fat: 0, calories: 0 }
     };
 
-    // Calculate goals from original diet items
+    // Calculate planned totals from original diet items
     config.dietItems
         .filter(item => item.category === category && !item.isUserAdded)
         .forEach(item => {
             const nutrition = calculateNutrition(item.id, item.amount, item.unit);
             if (nutrition) {
-                // Add to planned totals (goals)
                 totals.planned.protein += Math.round(nutrition.protein);
                 totals.planned.carbs += Math.round(nutrition.carbs);
                 totals.planned.fat += Math.round(nutrition.fat);
@@ -219,28 +218,23 @@ function calculateMealNutrition(category) {
             }
         });
 
-    // Calculate consumed items (including custom items)
-    // Regular items
+    // Calculate consumed totals from checked items
     config.dietItems
         .filter(item => item.category === category && !item.isUserAdded)
         .forEach(item => {
             const row = document.querySelector(`tr[data-item-id="${item.id}"]`);
-            const nutrition = calculateNutrition(item.id, item.amount, item.unit);
-            if (nutrition) {
-                if (row?.classList.contains('consumed')) {
+            if (row?.classList.contains('consumed')) {
+                const nutrition = calculateNutrition(item.id, item.amount, item.unit);
+                if (nutrition) {
                     totals.consumed.protein += Math.round(nutrition.protein);
                     totals.consumed.carbs += Math.round(nutrition.carbs);
                     totals.consumed.fat += Math.round(nutrition.fat);
                     totals.consumed.calories += Math.round(nutrition.calories);
                 }
-                totals.planned.protein += Math.round(nutrition.protein);
-                totals.planned.carbs += Math.round(nutrition.carbs);
-                totals.planned.fat += Math.round(nutrition.fat);
-                totals.planned.calories += Math.round(nutrition.calories);
             }
         });
 
-    // Custom items (only affect consumed totals when marked as consumed)
+    // Add consumed totals from custom items
     customItems
         .filter(item => item.category === category)
         .forEach(item => {
