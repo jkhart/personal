@@ -76,19 +76,34 @@ function handleAutocomplete(input) {
             if (!info.servingSize) return false;
             // Convert everything to lowercase for case-insensitive comparison
             const itemName = id.toLowerCase().replace(/[_-]/g, ' ');
-            return itemName.includes(value);
+            const displayName = formatDisplayName(id).toLowerCase();
+            return itemName.includes(value) || displayName.includes(value);
         })
         .slice(0, 5);
 
     console.log('Autocomplete matches:', matches);
 
     if (matches.length > 0) {
-        autocompleteResults.innerHTML = matches
-            .map(([id, info]) => `
-                <div class="autocomplete-item" data-id="${id}">
-                    ${formatDisplayName(id)}
-                </div>
-            `).join('');
+        // Group milk items together and sort them first
+        const sortedMatches = matches.sort((a, b) => {
+            const aIsMilk = a[0].toLowerCase().includes('milk');
+            const bIsMilk = b[0].toLowerCase().includes('milk');
+            if (aIsMilk && !bIsMilk) return -1;
+            if (!aIsMilk && bIsMilk) return 1;
+            return 0;
+        });
+
+        autocompleteResults.innerHTML = sortedMatches
+            .map(([id, info]) => {
+                const displayName = id.toLowerCase().includes('milk') 
+                    ? formatDisplayName(id.replace(/milk/i, '')) + ' Milk'
+                    : formatDisplayName(id);
+                return `
+                    <div class="autocomplete-item" data-id="${id}">
+                        ${displayName}
+                    </div>
+                `;
+            }).join('');
         autocompleteResults.classList.add('show');
     } else {
         autocompleteResults.classList.remove('show');
@@ -106,7 +121,12 @@ function showExistingItemFields(itemId) {
     }
 
     selectedItemId = itemId; // Store the selected item ID
-    nameInput.value = formatDisplayName(itemId);
+    
+    // Set display name using the same format as autocomplete
+    const displayName = itemId.toLowerCase().includes('milk')
+        ? formatDisplayName(itemId.replace(/milk/i, '')) + ' Milk'
+        : formatDisplayName(itemId);
+    nameInput.value = displayName;
     
     // Configure existing item fields
     const itemAmountInput = document.getElementById('itemAmount');
