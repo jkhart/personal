@@ -165,7 +165,7 @@ function updateCalories() {
     const fat = parseFloat(document.getElementById('fat').value) || 0;
     
     const calories = calculateCalories(protein, carbs, fat);
-    document.getElementById('calories').value = Math.round(calories);
+    document.getElementById('calories').textContent = Math.round(calories);
 }
 
 // Event Listeners

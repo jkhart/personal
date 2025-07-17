@@ -345,24 +345,57 @@ h1 {
     min-width: 32px;
 }
 
-.checkbox-group {
-    margin-top: 12px;
+.macro-inputs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
 }
 
-.checkbox-group label {
+.macro-field {
+    flex: 1;
+}
+
+.macro-field label {
+    font-size: 12px;
+}
+
+.macro-field .input-with-unit {
     display: flex;
     align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    margin: 0;
-    font-weight: normal;
+    gap: 4px;
 }
 
-.checkbox-group input[type="checkbox"] {
-    width: 14px;
-    height: 14px;
-    margin: 0;
-    cursor: pointer;
+.macro-field input {
+    width: 100%;
+    padding: 6px;
+    text-align: center;
+}
+
+.macro-field span {
+    color: #64748b;
+    font-size: 12px;
+    min-width: 12px;
+}
+
+.calories-display {
+    background: #f8fafc;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+}
+
+.calories-display label {
+    color: #475569;
+    font-size: 12px;
+    margin-bottom: 2px;
+}
+
+.calculated-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e293b;
+    font-variant-numeric: tabular-nums;
+    font-family: monospace;
 }
 
 .form-group input:focus,
