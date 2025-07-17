@@ -48,8 +48,8 @@ const nutritionalInfo = {
         fiber: 0,
         calories: 16
     },
-    // Handle all milk entries
-    breakfastMilk: {
+    // Common items
+    milk: {
         servingSize: 240,
         servingUnit: 'gram',
         protein: 8,
@@ -58,44 +58,7 @@ const nutritionalInfo = {
         fiber: 0,
         calories: 161
     },
-    lunchMilk: {
-        servingSize: 240,
-        servingUnit: 'gram',
-        protein: 8,
-        carbs: 12,
-        fat: 9,
-        fiber: 0,
-        calories: 161
-    },
-    dinnerMilk: {
-        servingSize: 240,
-        servingUnit: 'gram',
-        protein: 8,
-        carbs: 12,
-        fat: 9,
-        fiber: 0,
-        calories: 161
-    },
-    dessertMilk: {
-        servingSize: 240,
-        servingUnit: 'gram',
-        protein: 8,
-        carbs: 12,
-        fat: 9,
-        fiber: 0,
-        calories: 161
-    },
-    // Handle all banana entries
-    breakfastBanana: {
-        servingSize: 118,
-        servingUnit: 'gram',
-        protein: 1.3,
-        carbs: 27,
-        fat: 0.4,
-        fiber: 0,
-        calories: 116.8
-    },
-    dessertBanana: {
+    banana: {
         servingSize: 118,
         servingUnit: 'gram',
         protein: 1.3,
