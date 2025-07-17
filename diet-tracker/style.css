@@ -348,7 +348,7 @@ h1 {
 .macro-inputs {
     display: flex;
     gap: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .macro-field {
@@ -357,12 +357,8 @@ h1 {
 
 .macro-field label {
     font-size: 12px;
-}
-
-.macro-field .input-with-unit {
-    display: flex;
-    align-items: center;
-    gap: 4px;
+    color: #475569;
+    margin-bottom: 4px;
 }
 
 .macro-field input {
@@ -371,31 +367,48 @@ h1 {
     text-align: center;
 }
 
-.macro-field span {
-    color: #64748b;
-    font-size: 12px;
-    min-width: 12px;
-}
-
 .calories-display {
-    background: #f8fafc;
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 13px;
 }
 
 .calories-display label {
     color: #475569;
-    font-size: 12px;
-    margin-bottom: 2px;
+    margin: 0;
 }
 
 .calculated-value {
-    font-size: 16px;
     font-weight: 600;
     color: #1e293b;
     font-variant-numeric: tabular-nums;
     font-family: monospace;
+}
+
+.save-to-master {
+    margin-bottom: 0;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 4px;
+}
+
+.save-to-master label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    cursor: pointer;
+    font-size: 13px;
+    color: #475569;
+}
+
+.save-to-master input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    cursor: pointer;
 }
 
 .form-group input:focus,
