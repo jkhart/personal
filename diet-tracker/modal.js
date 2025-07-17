@@ -34,7 +34,8 @@ export function showAddItemModal() {
     document.getElementById('carbs').required = false;
     document.getElementById('fat').required = false;
     
-    nameInput.focus();
+    // Focus on meal selection first
+    categorySelect.focus();
 }
 
 // Close modal
