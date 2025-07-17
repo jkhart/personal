@@ -10,7 +10,7 @@ function formatNumber(num) {
 }
 
 // Track custom items for the day
-let customItems = [];
+window.customItems = [];
 
 // Initialize the app
 function initApp() {
@@ -29,19 +29,10 @@ function initApp() {
         showAddItemModal();
     });
     
-    // Create sections for each meal category
+    // Create tables for each meal category
     const categories = ['breakfast', 'lunch', 'dinner', 'dessert'];
     
     categories.forEach(category => {
-        // Create category section
-        const section = document.createElement('div');
-        section.className = 'meal-category';
-        
-        // Add category header
-        const header = document.createElement('h2');
-        header.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-        section.appendChild(header);
-
         // Create items container
         const itemsContainer = document.createElement('div');
         itemsContainer.className = 'items-container';
@@ -52,44 +43,15 @@ function initApp() {
             .filter(item => item.category === category)
             .sort((a, b) => b.amount - a.amount);
 
-        categoryItems.forEach(item => {
-            addItemToContainer(item, itemsContainer);
-        });
-        
-        section.appendChild(itemsContainer);
-        container.appendChild(section);
-    });
-    
-    // Listen for custom item additions
-    document.addEventListener('item-added', (e) => {
-        const { item } = e.detail;
-        customItems.push(item);
-        const container = document.getElementById(`${item.category}Items`);
-        if (container) {
-            addItemToContainer(item, container);
-            updateAllNutritionSummaries();
-        }
-    });
-    
-    // Load saved state and update nutrition
-    loadState();
-    updateAllNutritionSummaries();
-}
-
-// Add item to container
-function addItemToContainer(item, container) {
-    // Create or get the table
-    let table = container.querySelector('table');
-    if (!table) {
-        // Create table structure if it doesn't exist
-        table = document.createElement('table');
+        // Create table structure
+        const table = document.createElement('table');
         table.className = 'items-table';
         
-        // Add header row
+        // Add header row with meal category name
         const thead = document.createElement('thead');
         thead.innerHTML = `
             <tr>
-                <th class="item-name">Item</th>
+                <th class="item-name">${category.charAt(0).toUpperCase() + category.slice(1)}</th>
                 <th>Calories</th>
                 <th>Protein</th>
                 <th>Carbs</th>
@@ -101,7 +63,45 @@ function addItemToContainer(item, container) {
         // Add table body
         const tbody = document.createElement('tbody');
         table.appendChild(tbody);
-        container.appendChild(table);
+        itemsContainer.appendChild(table);
+
+        // Add items to the table
+        categoryItems.forEach(item => {
+            addItemToContainer(item, itemsContainer);
+        });
+        
+        container.appendChild(itemsContainer);
+    });
+    
+    // Listen for custom item additions
+    document.addEventListener('item-added', (e) => {
+        console.log('Received item-added event:', e.detail);
+        const { item } = e.detail;
+        customItems.push(item);
+        console.log('Added item to customItems array:', customItems);
+        const container = document.getElementById(`${item.category}Items`);
+        console.log('Found container:', container, 'for category:', item.category);
+        if (container) {
+            addItemToContainer(item, container);
+            updateAllNutritionSummaries();
+            console.log('Item added to container and nutrition updated');
+        } else {
+            console.error('Container not found for category:', item.category);
+        }
+    });
+    
+    // Load saved state and update nutrition
+    loadState();
+    updateAllNutritionSummaries();
+}
+
+// Add item to container
+function addItemToContainer(item, container) {
+    // Get the table (it should already exist)
+    const table = container.querySelector('table');
+    if (!table) {
+        console.error('Table not found in container');
+        return;
     }
     
     // Create new row
@@ -315,49 +315,54 @@ function updateMealSummary(category, totals) {
 
 // Update the daily summary display
 function updateDailySummary(totals) {
-    const summary = document.getElementById('nutritionSummary');
-    if (summary) {
-        const remaining = {
-            protein: Math.round(totals.planned.protein - totals.consumed.protein),
-            carbs: Math.round(totals.planned.carbs - totals.consumed.carbs),
-            fat: Math.round(totals.planned.fat - totals.consumed.fat),
-            calories: Math.round(totals.planned.calories - totals.consumed.calories)
-        };
+    const tbody = document.getElementById('dailyTotalsBody');
+    if (!tbody) return;
 
-        summary.innerHTML = `
-            <h3>Daily Totals</h3>
-            <table>
-                <tr>
-                    <th></th>
-                    <th>Calories</th>
-                    <th>Protein</th>
-                    <th>Carbs</th>
-                    <th>Fat</th>
-                </tr>
-                <tr class="planned-row">
-                    <td>Goal</td>
-                    <td>${formatNumber(totals.planned.calories)}</td>
-                    <td>${Math.round(totals.planned.protein)}g</td>
-                    <td>${Math.round(totals.planned.carbs)}g</td>
-                    <td>${Math.round(totals.planned.fat)}g</td>
-                </tr>
-                <tr class="consumed-row">
-                    <td>Eaten</td>
-                    <td>${formatNumber(totals.consumed.calories)}</td>
-                    <td>${Math.round(totals.consumed.protein)}g</td>
-                    <td>${Math.round(totals.consumed.carbs)}g</td>
-                    <td>${Math.round(totals.consumed.fat)}g</td>
-                </tr>
-                <tr class="remaining-row ${remaining.calories <= 0 ? 'complete' : ''}">
-                    <td>Left</td>
-                    <td class="${remaining.calories < 0 ? 'negative' : ''}">${formatNumber(remaining.calories)}</td>
-                    <td class="${remaining.protein < 0 ? 'negative' : ''}">${remaining.protein}g</td>
-                    <td class="${remaining.carbs < 0 ? 'negative' : ''}">${remaining.carbs}g</td>
-                    <td class="${remaining.fat < 0 ? 'negative' : ''}">${remaining.fat}g</td>
-                </tr>
-            </table>
-        `;
-    }
+    // Clear existing rows
+    tbody.innerHTML = '';
+
+    const remaining = {
+        protein: Math.round(totals.planned.protein - totals.consumed.protein),
+        carbs: Math.round(totals.planned.carbs - totals.consumed.carbs),
+        fat: Math.round(totals.planned.fat - totals.consumed.fat),
+        calories: Math.round(totals.planned.calories - totals.consumed.calories)
+    };
+
+    // Add goal row
+    const goalRow = document.createElement('tr');
+    goalRow.className = 'goal-row';
+    goalRow.innerHTML = `
+        <td class="item-name">Goal</td>
+        <td>${formatNumber(totals.planned.calories)}</td>
+        <td>${Math.round(totals.planned.protein)}</td>
+        <td>${Math.round(totals.planned.carbs)}</td>
+        <td>${Math.round(totals.planned.fat)}</td>
+    `;
+    tbody.appendChild(goalRow);
+
+    // Add consumed row
+    const consumedRow = document.createElement('tr');
+    consumedRow.className = 'summary-row';
+    consumedRow.innerHTML = `
+        <td class="item-name">Consumed</td>
+        <td>${formatNumber(totals.consumed.calories)}</td>
+        <td>${Math.round(totals.consumed.protein)}</td>
+        <td>${Math.round(totals.consumed.carbs)}</td>
+        <td>${Math.round(totals.consumed.fat)}</td>
+    `;
+    tbody.appendChild(consumedRow);
+
+    // Add remaining row
+    const remainingRow = document.createElement('tr');
+    remainingRow.className = `remaining-row ${remaining.calories <= 0 ? 'complete' : ''}`;
+    remainingRow.innerHTML = `
+        <td class="item-name">Remaining</td>
+        <td class="${remaining.calories < 0 ? 'negative' : ''}">${formatNumber(remaining.calories)}</td>
+        <td class="${remaining.protein < 0 ? 'negative' : ''}">${remaining.protein}</td>
+        <td class="${remaining.carbs < 0 ? 'negative' : ''}">${remaining.carbs}</td>
+        <td class="${remaining.fat < 0 ? 'negative' : ''}">${remaining.fat}</td>
+    `;
+    tbody.appendChild(remainingRow);
 }
 
 // Save the current state

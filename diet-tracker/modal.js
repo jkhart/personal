@@ -2,7 +2,7 @@
 import { nutritionalInfo } from './nutritional-info.js';
 import config from './config.js';
 
-let currentCategory = null;
+let selectedItemId = null; // Track selected item
 const modal = document.getElementById('addItemModal');
 const form = document.getElementById('addItemForm');
 const nameInput = document.getElementById('itemName');
@@ -18,25 +18,28 @@ function calculateCalories(protein, carbs, fat) {
 
 // Show modal
 export function showAddItemModal() {
+    console.log('Opening add item modal');
     modal.classList.add('show');
     nameInput.value = '';
     categorySelect.value = '';
     existingItemFields.style.display = 'none';
     newItemFields.style.display = 'none';
+    selectedItemId = null; // Reset selected item
     nameInput.focus();
 }
 
 // Close modal
 function closeModal() {
+    console.log('Closing modal');
     modal.classList.remove('show');
     form.reset();
-    currentCategory = null;
+    selectedItemId = null; // Reset selected item
 }
 
 // Format display name from ID
 function formatDisplayName(id) {
     return id
-        .split('_')
+        .split(/[_-]/)
         .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
         .join(' ');
 }
@@ -55,10 +58,12 @@ function handleAutocomplete(input) {
             // Check if the item has a servingSize property to ensure it's from the master list
             if (!info.servingSize) return false;
             // Convert everything to lowercase for case-insensitive comparison
-            const itemName = id.toLowerCase().replace(/_/g, ' ');
+            const itemName = id.toLowerCase().replace(/[_-]/g, ' ');
             return itemName.includes(value);
         })
         .slice(0, 5);
+
+    console.log('Autocomplete matches:', matches);
 
     if (matches.length > 0) {
         autocompleteResults.innerHTML = matches
@@ -76,10 +81,14 @@ function handleAutocomplete(input) {
 
 // Show existing item fields
 function showExistingItemFields(itemId) {
+    console.log('Showing existing item fields for:', itemId);
     const item = nutritionalInfo[itemId];
-    if (!item) return;
+    if (!item) {
+        console.error('No item found for ID:', itemId);
+        return;
+    }
 
-    currentCategory = categorySelect.value;
+    selectedItemId = itemId; // Store the selected item ID
     nameInput.value = formatDisplayName(itemId);
     document.getElementById('itemAmount').value = item.servingSize;
     document.getElementById('unitLabel').textContent = item.servingUnit;
@@ -92,7 +101,8 @@ function showExistingItemFields(itemId) {
 
 // Show new item fields
 function showNewItemFields() {
-    currentCategory = categorySelect.value;
+    console.log('Showing new item fields');
+    selectedItemId = null; // Clear selected item
     existingItemFields.style.display = 'none';
     newItemFields.style.display = 'block';
     document.getElementById('saveToMasterList').style.display = 'block';
@@ -118,7 +128,10 @@ function updateCalories() {
 document.querySelector('.close-btn').addEventListener('click', closeModal);
 document.querySelector('.cancel-btn').addEventListener('click', closeModal);
 
-nameInput.addEventListener('input', (e) => handleAutocomplete(e.target.value));
+nameInput.addEventListener('input', (e) => {
+    selectedItemId = null; // Clear selected item when input changes
+    handleAutocomplete(e.target.value);
+});
 
 autocompleteResults.addEventListener('click', (e) => {
     const item = e.target.closest('.autocomplete-item');
@@ -131,29 +144,38 @@ autocompleteResults.addEventListener('click', (e) => {
     document.getElementById(id).addEventListener('input', updateCalories);
 });
 
+// Handle form submission
 form.addEventListener('submit', (e) => {
     e.preventDefault();
+    console.log('Form submitted');
     
-    if (!categorySelect.value) {
+    const category = categorySelect.value;
+    console.log('Selected category:', category);
+    
+    if (!category) {
         alert('Please select a meal category');
         return;
     }
     
     const name = nameInput.value;
+    if (!name) {
+        alert('Please enter an item name');
+        return;
+    }
+
     let nutrition;
     let amount;
     let unit;
 
-    if (existingItemFields.style.display === 'block') {
+    console.log('Selected item ID:', selectedItemId);
+    console.log('Existing fields display:', existingItemFields.style.display);
+
+    if (existingItemFields.style.display === 'block' && selectedItemId) {
+        console.log('Processing existing item');
         // Handle existing item
         amount = parseFloat(document.getElementById('itemAmount').value);
         if (!amount) {
             alert('Please enter an amount');
-            return;
-        }
-        
-        if (!selectedItemId) {
-            alert('Please select an item from the list');
             return;
         }
         
@@ -168,7 +190,10 @@ form.addEventListener('submit', (e) => {
             fat: Math.round(baseItem.fat * ratio * 10) / 10,
             calories: Math.round(baseItem.calories * ratio)
         };
+
+        console.log('Calculated nutrition:', nutrition);
     } else {
+        console.log('Processing new item');
         // Handle new item
         amount = parseFloat(document.getElementById('newAmount').value);
         unit = document.getElementById('newUnit').value;
@@ -185,16 +210,19 @@ form.addEventListener('submit', (e) => {
             calories: Math.round(parseFloat(document.getElementById('calories').value) || 0)
         };
 
+        console.log('New item nutrition:', nutrition);
+
         // If saving to master list, save the item
         if (document.getElementById('saveToMasterListCheckbox').checked) {
             const masterItem = {
                 name,
-                category: categorySelect.value,
+                category,
                 amount,
                 unit,
                 nutrition
             };
 
+            console.log('Saving to master list:', masterItem);
             if (config.addUserItem(masterItem)) {
                 console.log('Item saved to master list');
             } else {
@@ -207,12 +235,14 @@ form.addEventListener('submit', (e) => {
     const customItem = {
         id: `custom_${Date.now()}`,
         name,
-        category: categorySelect.value,
+        category,
         amount,
         unit,
         nutrition,
         isCustom: true
     };
+
+    console.log('Dispatching item-added event with:', customItem);
 
     // Add to today's items
     const event = new CustomEvent('item-added', {

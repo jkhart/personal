@@ -72,8 +72,8 @@ h1 {
     background: #dc2626;
 }
 
-.meal-category {
-    margin-bottom: 15px;
+.items-container {
+    margin-bottom: 12px;
     background: white;
     border-radius: 12px;
     padding: 12px;
@@ -81,11 +81,25 @@ h1 {
     max-width: 375px;
     margin-left: auto;
     margin-right: auto;
-    font-size: 11px;
 }
 
-.items-container {
-    margin-bottom: 12px;
+.daily-totals {
+    margin-bottom: 20px;
+}
+
+.daily-totals .items-table thead th {
+    background: #1a365d;
+    color: white;
+    font-weight: 600;
+}
+
+.daily-totals .items-table tbody tr {
+    background: white;
+}
+
+.daily-totals .items-table tbody tr.goal-row td {
+    color: #2d3748;
+    font-weight: 500;
 }
 
 .items-table {
@@ -93,11 +107,6 @@ h1 {
     border-collapse: separate;
     border-spacing: 0;
     font-size: 11px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 12px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .items-table td {
@@ -108,13 +117,6 @@ h1 {
 
 .items-table tbody tr:last-child td {
     border-bottom: none;
-}
-
-.items-table th.item-check,
-.items-table td.item-check {
-    width: 24px;
-    text-align: center;
-    padding: 6px 2px;
 }
 
 .items-table th.item-name,
@@ -129,31 +131,15 @@ h1 {
     color: #2d3748;
     font-size: 11px;
     white-space: nowrap;
-}
-
-.items-table input[type="checkbox"] {
-    width: 12px;
-    height: 12px;
-    cursor: pointer;
-    border-radius: 3px;
-    flex-shrink: 0;
-}
-
-.items-table tr.diet-item input[type="checkbox"]:checked + label {
-    color: #6c757d;
-}
-
-.items-table label {
-    cursor: pointer;
-    color: #333;
-    font-size: 11px;
-    display: block;
+    text-transform: capitalize;
+    padding: 8px 6px;
+    border-bottom: 2px solid #cbd5e1;
 }
 
 /* Make the numeric columns equal width */
-.items-table th:not(.item-check):not(.item-name),
-.items-table td:not(.item-check):not(.item-name) {
-    width: calc((100% - 24px - 40%) / 4);
+.items-table th:not(.item-name),
+.items-table td:not(.item-name) {
+    width: calc((100% - 40%) / 4);
     font-variant-numeric: tabular-nums;
     font-family: monospace;
     font-size: 11px;
@@ -226,80 +212,6 @@ h1 {
 
 .items-table tr.diet-item.consumed:hover {
     background: #f1f5f9;
-}
-
-.nutrition-summary {
-    background: white;
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.nutrition-summary h3 {
-    color: #2c3e50;
-    margin-bottom: 12px;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-/* Table Styles */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-th {
-    text-align: right;
-    padding: 8px;
-    background: #edf2f7;
-    font-weight: 500;
-    color: #2d3748;
-    font-size: 12px;
-}
-
-td {
-    padding: 8px;
-}
-
-/* First column (labels) */
-td:first-child {
-    color: #4a5568;
-    font-weight: 500;
-    width: 70px;
-}
-
-/* Numeric columns */
-td:not(:first-child) {
-    font-family: monospace;
-    text-align: right;
-    width: calc((100% - 70px) / 4);
-}
-
-/* Row styles */
-.planned-row {
-    color: #2d3748;
-}
-
-.consumed-row {
-    color: #4a5568;
-}
-
-.remaining-row {
-    color: #2b6cb0;
-    font-weight: 500;
-}
-
-.remaining-row.complete {
-    color: #2f855a;
-}
-
-.remaining-row td.negative {
-    color: #dc2626;
 }
 
 /* Modal Styles */
@@ -507,11 +419,19 @@ td:not(:first-child) {
 
 /* Responsive adjustments */
 @media (max-width: 480px) {
-    td, th {
-        padding: 6px;
+    .items-table td, 
+    .items-table th {
+        padding: 6px 4px;
+        font-size: 10px;
     }
     
-    td:first-child {
-        width: 60px;
+    .items-table th.item-name,
+    .items-table td.item-name {
+        width: 35%;
+    }
+
+    .items-table th:not(.item-name),
+    .items-table td:not(.item-name) {
+        width: calc((100% - 35%) / 4);
     }
 }
