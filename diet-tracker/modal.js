@@ -125,7 +125,8 @@ function showExistingItemFields(itemId) {
     document.getElementById('carbs').required = false;
     document.getElementById('fat').required = false;
     
-    document.getElementById('saveToMasterList').style.display = 'none';
+    // Hide save to master option for existing items
+    document.querySelector('.save-to-master').style.display = 'none';
     autocompleteResults.classList.remove('show');
 }
 
@@ -148,13 +149,14 @@ function showNewItemFields() {
     // Disable requirements for existing item fields
     document.getElementById('itemAmount').required = false;
     
-    document.getElementById('saveToMasterList').style.display = 'block';
+    // Show save to master option for new items
+    document.querySelector('.save-to-master').style.display = 'block';
     
     // Clear input fields
     document.getElementById('protein').value = '';
     document.getElementById('carbs').value = '';
     document.getElementById('fat').value = '';
-    document.getElementById('calories').value = '';
+    document.getElementById('calories').textContent = '0';
     document.getElementById('newAmount').value = '';
 }
 
