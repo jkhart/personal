@@ -128,9 +128,7 @@
 
 /* Page Layout */
 .page {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 10px;
+    padding: 10px 0px;
 }
 
 /* Placeholder Message */
@@ -151,6 +149,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
+    padding: 10px 10px 0px 10px;
 }
 
 h1 {
@@ -197,10 +196,6 @@ h1 {
 .items-container {
     margin-bottom: 12px;
     background: white;
-    border-radius: 6px;
-    padding: 6px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    max-width: 375px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -384,7 +379,6 @@ h1 {
     background: white;
     border-radius: 6px;
     width: 90%;
-    max-width: 375px;
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
