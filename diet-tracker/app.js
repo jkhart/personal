@@ -20,6 +20,8 @@ function initApp() {
     document.getElementById('resetButton').addEventListener('click', () => {
         if (confirm('Are you sure you want to reset all data? This will clear all items and progress for today.')) {
             localStorage.removeItem('dietTrackerState');
+            localStorage.removeItem('dietTrackerUserItems');  // Also clear custom items
+            window.customItems = [];  // Reset the in-memory custom items array
             location.reload();
         }
     });
