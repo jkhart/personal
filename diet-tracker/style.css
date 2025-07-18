@@ -1,31 +1,10 @@
-/* Color Variables */
-:root {
-    --color-primary: #64748b;
-    --color-primary-light: #94a3b8;
-    --color-primary-dark: #475569;
-    --color-accent: #3b82f6;
-    --color-accent-light: #60a5fa;
-    --color-accent-dark: #2563eb;
-    --color-success: #22c55e;
-    --color-success-dark: #16a34a;
-    --color-danger: #ef4444;
-    --color-danger-dark: #dc2626;
-    --color-background: #f8fafc;
-    --color-surface: #ffffff;
-    --color-border: #e2e8f0;
-}
-
 body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    background-color: var(--color-background);
-    -webkit-tap-highlight-color: transparent;
-    padding-bottom: env(safe-area-inset-bottom);
+    margin: 0px;
 }
 
 /* Navigation */
 .nav-bar {
-    background: var(--color-primary);
+    background: #1a365d;
     padding: 0 12px;
     position: sticky;
     top: 0;
@@ -64,7 +43,7 @@ body {
     left: -280px;
     width: 280px;
     height: 100vh;
-    background: var(--color-surface);
+    background: white;
     z-index: 200;
     transition: left 0.3s ease;
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
@@ -75,7 +54,7 @@ body {
 }
 
 .nav-menu-header {
-    background: var(--color-primary);
+    background: #1a365d;
     color: white;
     padding: 16px;
     display: flex;
@@ -133,7 +112,7 @@ body {
 }
 
 .nav-item {
-    color: var(--color-primary-dark);
+    color: #1e293b;
     text-decoration: none;
     padding: 12px 16px;
     font-size: 14px;
@@ -143,38 +122,44 @@ body {
 }
 
 .nav-item:hover {
-    background: var(--color-background);
+    background: #f1f5f9;
 }
 
 .nav-item.active {
-    color: var(--color-accent);
+    color: #2563eb;
     background: #e0f2fe;
 }
 
 /* Page Layout */
 .page {
-    max-width: 600px;
     padding: 10px 0px;
 }
 
 /* Placeholder Message */
 .placeholder-message {
     text-align: center;
-    color: var(--color-primary-light);
+    color: #64748b;
     padding: 32px;
     font-size: 14px;
-    background: var(--color-surface);
+    background: white;
     border-radius: 6px;
     margin-top: 16px;
 }
 
-/* App Header */
+/* Rest of existing styles */
+
 .app-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
     padding: 10px 10px 0px 10px;
+}
+
+h1 {
+    color: #333;
+    font-size: 20px;
+    margin: 0;
 }
 
 .header-buttons {
@@ -184,22 +169,21 @@ body {
 }
 
 .add-btn {
-    background: var(--color-accent);
+    background: #4CAF50;
     border: none;
     padding: 6px 12px;
     border-radius: 6px;
     font-size: 14px;
-    color: white;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .add-btn:hover {
-    background: var(--color-accent-dark);
+    background: #43A047;
 }
 
 .reset-btn {
-    background: var(--color-danger);
+    background: #ef4444;
     color: white;
     border: none;
     padding: 6px 12px;
@@ -210,14 +194,12 @@ body {
 }
 
 .reset-btn:hover {
-    background: var(--color-danger-dark);
+    background: #dc2626;
 }
 
-/* Tables */
 .items-container {
     margin-bottom: 12px;
-    background: var(--color-surface);
-    max-width: 375px;
+    background: white;
     margin-left: auto;
     margin-right: auto;
 }
@@ -227,17 +209,17 @@ body {
 }
 
 .daily-totals .items-table thead th {
-    background: var(--color-primary);
+    background: #1a365d;
     color: white;
     font-weight: 600;
 }
 
 .daily-totals .items-table tbody tr {
-    background: var(--color-surface);
+    background: white;
 }
 
 .daily-totals .items-table tbody tr.goal-row td {
-    color: var(--color-primary-dark);
+    color: #2d3748;
     font-weight: 600;
 }
 
@@ -246,17 +228,16 @@ body {
     border-collapse: separate;
     border-spacing: 0;
     font-size: 11px;
-    border: 1px solid var(--color-border);
+    border: 1px solid #cbd5e1;
 }
 
 .items-table th {
     text-align: right;
 }
-
 .items-table td {
     padding: 6px;
     text-align: right;
-    border-top: 1px solid var(--color-border);
+    border-top: 1px solid #e2e8f0;
 }
 
 .items-table tbody tr:last-child td {
@@ -272,7 +253,7 @@ body {
 
 .item-name-text {
     font-size: 11px;
-    color: var(--color-primary-dark);
+    color: #1e293b;
     margin-bottom: 2px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -281,7 +262,7 @@ body {
 
 .item-amount {
     font-size: 9px;
-    color: var(--color-primary-light);
+    color: #64748b;
 }
 
 .items-table tr.diet-item td {
@@ -290,21 +271,386 @@ body {
 
 .items-table tr.diet-item.consumed .item-name-text {
     text-decoration: line-through;
-    color: var(--color-primary-light);
+    color: #94a3b8;
 }
 
 .items-table tr.diet-item.consumed .item-amount {
-    color: var(--color-primary-light);
+    color: #94a3b8;
 }
 
 .items-table thead th {
-    background: var(--color-background);
+    background: #edf2f7;
     font-weight: 600;
-    color: var(--color-primary-dark);
+    color: #2d3748;
     font-size: 11px;
     text-transform: capitalize;
     padding: 8px 6px;
-    border-bottom: 2px solid var(--color-border);
+    border-bottom: 2px solid #cbd5e1;
 }
 
-/* Rest of existing styles... */
+/* Make the numeric columns equal width */
+.items-table th:not(.item-name),
+.items-table td:not(.item-name) {
+    width: calc((100% - 40%) / 4);
+    font-variant-numeric: tabular-nums;
+    font-family: monospace;
+    font-size: 11px;
+}
+
+/* Goal row styling */
+.items-table tr.goal-row {
+    background: #f8fafc;
+}
+
+.items-table tr.goal-row td {
+    color: #475569;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    border-top: 3px solid #cbd5e1;
+}
+
+/* Summary row styling */
+.items-table tr.summary-row {
+    background: #f8fafc;
+}
+
+.items-table tr.summary-row td {
+    color: #475569;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+}
+
+/* Remaining row styling */
+.items-table tr.remaining-row {
+    background: #f8fafc;
+}
+
+.items-table tr.remaining-row td {
+    color: #475569;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    border-top: 1px dashed #cbd5e1;
+    border-bottom: 1px solid #cbd5e1;
+}
+
+.items-table tr.remaining-row.complete td {
+    color: #475569;
+}
+
+.items-table tr.remaining-row td.negative {
+    color: #dc2626;
+}
+
+/* Regular item styling */
+.items-table tr.diet-item {
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.items-table tr.diet-item.consumed {
+    font-style: italic;
+    color: #94a3b8;
+}
+
+.items-table tr.diet-item.consumed td {
+    text-decoration: line-through;
+}
+
+/* Modal Base Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+}
+
+.modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 6px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    font-size: 13px;
+}
+
+.modal-header {
+    padding: 12px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 16px;
+    color: #1a365d;
+    font-weight: 600;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.modal-body {
+    padding: 12px;
+}
+
+.form-group {
+    margin-bottom: 12px;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 4px;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #1e293b;
+    background: #fff;
+    transition: all 0.2s ease;
+}
+
+.form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+    background-position: right 8px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: 32px;
+}
+
+.form-group select:focus {
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%232563eb' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+}
+
+.input-with-unit {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.input-with-unit input {
+    width: 80px;
+}
+
+.input-with-unit select {
+    width: auto;
+}
+
+.input-with-unit span {
+    color: #64748b;
+    font-size: 13px;
+    min-width: 32px;
+}
+
+.macro-inputs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.macro-field {
+    flex: 1;
+}
+
+.macro-field label {
+    font-size: 12px;
+    color: #475569;
+    margin-bottom: 4px;
+}
+
+.macro-field input {
+    width: 100%;
+    padding: 6px;
+    text-align: center;
+}
+
+.calories-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 13px;
+}
+
+.calories-display label {
+    color: #475569;
+    margin: 0;
+}
+
+.calculated-value {
+    font-weight: 600;
+    color: #1e293b;
+    font-variant-numeric: tabular-nums;
+    font-family: monospace;
+}
+
+.save-to-master {
+    margin-bottom: 0;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 4px;
+}
+
+.save-to-master label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    cursor: pointer;
+    font-size: 13px;
+    color: #475569;
+}
+
+.save-to-master input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+}
+
+.form-actions {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.form-actions button {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.form-actions button[type="submit"] {
+    background: #2563eb;
+    color: white;
+    border: none;
+    font-weight: 500;
+}
+
+.form-actions button[type="submit"]:hover {
+    background: #1d4ed8;
+}
+
+.form-actions .cancel-btn {
+    background: none;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+}
+
+.form-actions .cancel-btn:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+/* Autocomplete Results */
+.autocomplete-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    margin-top: 2px;
+    max-height: 180px;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    z-index: 1000;
+    display: none;
+}
+
+.autocomplete-results.show {
+    display: block;
+}
+
+.autocomplete-item {
+    padding: 6px 8px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #1e293b;
+}
+
+.autocomplete-item:hover {
+    background: #f1f5f9;
+}
+
+.autocomplete-item.selected {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .items-table td, 
+    .items-table th {
+        padding: 6px 6px;
+        font-size: 10px;
+    }
+    
+    .items-table th.item-name,
+    .items-table td.item-name {
+        width: 45%;
+    }
+
+    .items-table th:not(.item-name),
+    .items-table td:not(.item-name) {
+        width: calc((100% - 50%) / 4);
+    }
+}
