@@ -110,6 +110,9 @@ h1 {
     border: 1px solid #cbd5e1;
 }
 
+.items-table th {
+    text-align: right;
+}
 .items-table td {
     padding: 6px;
     text-align: right;
@@ -128,18 +131,21 @@ h1 {
 }
 
 .item-name-text {
-    font-size: 13px;
+    font-size: 11px;
     color: #1e293b;
     margin-bottom: 2px;
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     display: block;
 }
 
 .item-amount {
-    font-size: 11px;
+    font-size: 9px;
     color: #64748b;
+}
+
+.items-table tr.diet-item td {
+    padding: 2px 4px;
 }
 
 .items-table tr.diet-item.consumed .item-name-text {
@@ -156,9 +162,8 @@ h1 {
     font-weight: 600;
     color: #2d3748;
     font-size: 11px;
-    white-space: nowrap;
     text-transform: capitalize;
-    padding: 8px 6px;
+    padding: 8px 4px;
     border-bottom: 2px solid #cbd5e1;
 }
 
@@ -521,11 +526,11 @@ h1 {
     
     .items-table th.item-name,
     .items-table td.item-name {
-        width: 35%;
+        width: 50%;
     }
 
     .items-table th:not(.item-name),
     .items-table td:not(.item-name) {
-        width: calc((100% - 35%) / 4);
+        width: calc((100% - 50%) / 4);
     }
 }

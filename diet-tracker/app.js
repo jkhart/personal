@@ -52,10 +52,10 @@ function initApp() {
         thead.innerHTML = `
             <tr>
                 <th class="item-name">${category.charAt(0).toUpperCase() + category.slice(1)}</th>
-                <th>Calories</th>
-                <th>Protein</th>
-                <th>Carbs</th>
-                <th>Fat</th>
+                <th>C</th>
+                <th>P</th>
+                <th>C</th>
+                <th>F</th>
             </tr>
         `;
         table.appendChild(thead);
