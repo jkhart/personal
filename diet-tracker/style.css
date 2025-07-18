@@ -131,6 +131,10 @@ h1 {
     font-size: 13px;
     color: #1e293b;
     margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
 }
 
 .item-amount {
