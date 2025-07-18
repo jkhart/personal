@@ -12,7 +12,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="nav-bar">
+        <div class="nav-items">
+            <a href="#" class="nav-item active" data-page="diet">Diet</a>
+            <a href="#" class="nav-item" data-page="tasks">Tasks</a>
+        </div>
+    </div>
+    <div class="page" id="dietPage">
         <div class="app-header">
             <h1>Daily Diet Tracker</h1>
             <div class="header-buttons">
@@ -38,6 +44,19 @@
         </div>
         <div id="dietItems">
             <!-- Items will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <div class="page" id="tasksPage" style="display: none;">
+        <div class="app-header">
+            <h1>Daily Tasks</h1>
+            <div class="header-buttons">
+                <button id="addTaskButton" class="add-btn" title="Add task">Add</button>
+            </div>
+        </div>
+        <div id="taskItems">
+            <!-- Tasks will be populated by JavaScript -->
+            <div class="placeholder-message">Tasks feature coming soon!</div>
         </div>
     </div>
 
@@ -127,5 +146,6 @@
     </div>
 
     <script type="module" src="app.js"></script>
+    <script type="module" src="navigation.js"></script>
 </body>
 </html>
