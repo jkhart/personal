@@ -13,11 +13,26 @@
 </head>
 <body>
     <div class="nav-bar">
+        <button class="menu-button" id="menuButton" aria-label="Menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <line x1="4" y1="6" x2="20" y2="6"></line>
+                <line x1="4" y1="12" x2="20" y2="12"></line>
+                <line x1="4" y1="18" x2="20" y2="18"></line>
+            </svg>
+        </button>
+        <h1 class="nav-title">Diet</h1>
+    </div>
+    <div class="nav-menu" id="navMenu">
+        <div class="nav-menu-header">
+            <h2>Menu</h2>
+            <button class="close-menu-button" id="closeMenuButton" aria-label="Close menu">&times;</button>
+        </div>
         <div class="nav-items">
             <a href="#" class="nav-item active" data-page="diet">Diet</a>
             <a href="#" class="nav-item" data-page="tasks">Tasks</a>
         </div>
     </div>
+    <div class="nav-overlay" id="navOverlay"></div>
     <div class="page" id="dietPage">
         <div class="app-header">
             <h1>Daily Diet Tracker</h1>
