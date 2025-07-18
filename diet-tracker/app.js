@@ -209,16 +209,19 @@ function calculateMealNutrition(category) {
     config.dietItems
         .filter(item => item.category === category && !item.isUserAdded)
         .forEach(item => {
-            const row = document.querySelector(`tr[data-item-id="${item.id}"]`);
-            if (row?.classList.contains('consumed')) {
-                const nutrition = calculateNutrition(item.id, item.amount, item.unit);
-                if (nutrition) {
-                    totals.consumed.protein += Math.round(nutrition.protein);
-                    totals.consumed.carbs += Math.round(nutrition.carbs);
-                    totals.consumed.fat += Math.round(nutrition.fat);
-                    totals.consumed.calories += Math.round(nutrition.calories);
+            // Find rows for this item in this specific category
+            const rows = document.querySelectorAll(`#${category}Items tr[data-item-id="${item.id}"]`);
+            rows.forEach(row => {
+                if (row?.classList.contains('consumed')) {
+                    const nutrition = calculateNutrition(item.id, item.amount, item.unit);
+                    if (nutrition) {
+                        totals.consumed.protein += Math.round(nutrition.protein);
+                        totals.consumed.carbs += Math.round(nutrition.carbs);
+                        totals.consumed.fat += Math.round(nutrition.fat);
+                        totals.consumed.calories += Math.round(nutrition.calories);
+                    }
                 }
-            }
+            });
         });
 
     // Add consumed totals from custom items
@@ -377,10 +380,11 @@ function saveState() {
     
     // Save regular items state
     config.dietItems.forEach(item => {
-        const row = document.querySelector(`tr[data-item-id="${item.id}"]`);
-        if (row) {
-            state.consumed[item.id] = row.classList.contains('consumed');
-        }
+        const rows = document.querySelectorAll(`#${item.category}Items tr[data-item-id="${item.id}"]`);
+        rows.forEach(row => {
+            const key = `${item.id}_${item.category}`;
+            state.consumed[key] = row.classList.contains('consumed');
+        });
     });
 
     // Save custom items state
@@ -437,10 +441,13 @@ function loadState() {
     
     // Restore regular items state
     config.dietItems.forEach(item => {
-        const row = document.querySelector(`tr[data-item-id="${item.id}"]`);
-        if (row && data.state.consumed && data.state.consumed[item.id]) {
-            row.classList.add('consumed');
-        }
+        const key = `${item.id}_${item.category}`;
+        const rows = document.querySelectorAll(`#${item.category}Items tr[data-item-id="${item.id}"]`);
+        rows.forEach(row => {
+            if (data.state.consumed && data.state.consumed[key]) {
+                row.classList.add('consumed');
+            }
+        });
     });
 
     // Re-add custom items to the DOM
