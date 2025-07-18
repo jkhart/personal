@@ -39,22 +39,15 @@ h1 {
 .add-btn {
     background: #4CAF50;
     border: none;
-    color: white;
-    width: 24px;
-    height: 24px;
-    border-radius: 12px;
-    font-size: 18px;
-    line-height: 1;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     transition: all 0.2s ease;
 }
 
 .add-btn:hover {
     background: #43A047;
-    transform: scale(1.1);
 }
 
 .reset-btn {
@@ -99,7 +92,7 @@ h1 {
 
 .daily-totals .items-table tbody tr.goal-row td {
     color: #2d3748;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .items-table {
@@ -145,7 +138,7 @@ h1 {
 }
 
 .items-table tr.diet-item td {
-    padding: 2px 4px;
+    padding: 2px 6px;
 }
 
 .items-table tr.diet-item.consumed .item-name-text {
@@ -163,7 +156,7 @@ h1 {
     color: #2d3748;
     font-size: 11px;
     text-transform: capitalize;
-    padding: 8px 4px;
+    padding: 8px 6px;
     border-bottom: 2px solid #cbd5e1;
 }
 
@@ -520,13 +513,13 @@ h1 {
 @media (max-width: 480px) {
     .items-table td, 
     .items-table th {
-        padding: 6px 4px;
+        padding: 6px 6px;
         font-size: 10px;
     }
     
     .items-table th.item-name,
     .items-table td.item-name {
-        width: 50%;
+        width: 45%;
     }
 
     .items-table th:not(.item-name),
